@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Compound interest calculator</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+
+<style>
+    body{
+        padding: 20px;
+        margin: 10px;
+    }
+    .container{
+        background-color:transparent;
+    }
+    .table,thead,tr,td,tbody{
+        border: 1px solid black;
+        text-align: center;
+    }
+    #Error{
+        color: red;
+    }
+
+</style>
+
+
+</head>
+<body >
+<div class="container">
+        <div class="jumbotron">
+        <h1>Calculate compound interest</h1>
+        <p>This tool is used to calculate compound interest.</p>
+            <p id="Error"></p>
+        </div>
+
+<div class="row" id="rowId">
+        <div class="row">
+            <div class="col-md-3">
+                <label for="nameField">Name</label>
+            </div>
+            <div class="col-md-3">
+                <input type="text" id="nameField">
+            </div>
+        </div>
+        <br>
+
+        <div class="row">
+            <div class="col-md-3">
+                <label for="amountField">Initial Amount</label>
+            </div>
+            <div class="col-md-3">
+                <input type="text" id="amountField">
+            </div>
+        </div>
+        <br>
+
+        <div class="row">
+                <div class="col-md-3">
+                    <label for="rateField">Rate</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="text" id="rateField">
+                </div>
+        </div>
+        <br>
+
+        <div class="row">
+                <div class="col-md-3">
+                    <label for="yearsField">Years</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="text" id="yearsField">
+                </div>
+        </div>
+        <br>
+
+        <div class="row">
+                <div class="col-md-3">
+                    <label for="compoundField">Compound per year</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="text" id="compoundField">
+                </div>
+        </div>
+        <br>
+        <br>
+
+        <div class="row">
+            <div class="col-lg-9">
+                <table class="table">
+                    <thead> <!--The head part of the table-->
+                        <tr>  <!--Adding a row to the head-->
+                            <th>Name</th>  <!--Adding the heading to the table-->
+                            <th>Initial Amount</th>
+                            <th>Rate</th>
+                            <th>Years</th>
+                            <th>Compound Per Year</th>
+                            <th>End Amount</th>
+                        </tr>
+                    </thead>
+
+                    <tbody><!--The body of the table-->
+
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+</div>
+        <br>
+
+        <div class="row">
+                <div class="col-md-3">
+                    <button type="button" class="btn btn-success" id="calculateButton">Calculate</button>
+                </div>
+
+                <div class="col-md-3">
+                    <button type="button" class="btn btn-warning" id="clearFieldButton">Clear_Input</button>
+                </div>
+
+            <div class="col-md-3">
+                <button type="button" class="btn btn-warning" id="resetTableButton">Reset_Table</button>
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+        </div>
+
+
+
+
+
+
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+</body>
+</html>
+<script>
+
+    $(document).ready(function () {
+
+
+
+
+
+        function validateInputs (name ,amount ,rate ,years, compound_per_years) {
+
+
+
+            if (name===''||isNaN(name)===false){
+
+                 passValidations=false;
+
+               if (amount==='' || isNaN(amount)){
+
+                  passValidations=false;
+
+                   if (rate==='' || isNaN(rate)){
+
+                     passValidations=false;
+
+                      if (years==='' || isNaN(years)){
+
+                       passValidations=false;
+
+                          if (compound_per_years===''||isNaN(compound_per_years)){
+                            passValidations=false;
+
+                            if($('#amountField,#rateField,#compoundField,#yearsField').contains(',')){
+                                passValidations=false;
+                                invalid=true;
+
+                            }
+                           }
+                       }
+                   }
+               }
+            }else{
+              passValidations=true;
+            }
+
+            return passValidations;
+
+
+
+            }
+
+        $('#calculateButton').click(function () {
+
+            //getting variables from text fields,val() is the used to get the values
+            var passValidations; //returned in function
+            var invalid;
+
+            var name=$('#nameField').val();
+            var amount=$('#amountField').val();
+            var rate=$('#rateField').val();
+            var years=$('#yearsField').val();
+            var compound_per_years=$('#compoundField').val();
+
+            //calculations
+            var Amount= (amount* Math.pow((1 +(rate/(compound_per_years*100))), (compound_per_years*years)));
+
+            var endAmount=Math.round(Amount*100)/100;//rounding off
+
+
+            passValidations = validateInputs(name,amount,rate,years,compound_per_years);
+
+
+
+
+
+
+          if (passValidations===true) {
+              $('#Error').empty();
+                $('.table').append('<tr><td>' + name + '</td><td>R' + amount + '</td><td>' + rate + '%' + '</td><td>' + years + '</td><td>' + compound_per_years + '</td><td>R' + endAmount + '</td></tr>')
+            }else if(passValidations===false && invalid===true){
+              $("#Error").html('Please make sure that you use . instead of ,');
+
+          }
+            else if(passValidations===false){
+                $("#Error").html('Please make sure that your details are correct')
+            }
+
+        });
+
+        $('#clearFieldButton').click(function () {
+
+          $('input').val("");
+            $('#Error').empty();
+        });
+
+        $('#resetTableButton').click(function () {
+            $('tbody').empty();
+            $('#Error').empty();
+        })
+
+    });
+</script>
